@@ -1,40 +1,46 @@
-#include <Arduino.h>   // Gives you the Arduino core APIs
-#include <SPI.h>       // Not always mandatory to include manually, but can help
-#include <TFT_eSPI.h>  // The TFT_eSPI library
-#include <WiFi.h>       // For ESP32 Wi-Fi
-#include <HTTPClient.h> // For making HTTP requests
+#include <Arduino.h>
+#include <SPI.h>
+#include <TFT_eSPI.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
 
-// Replace these with your phone's hotspot or router credentials
-const char* ssid     = "samnet"; 
-const char* password = "suplex@me";
+const char *ssid = "samnet";
+const char *password = "suplex@me";
 
-void setup() {
-  Serial.begin(115200);
+TFT_eSPI tft = TFT_eSPI();
 
-  // Connect to Wi-Fi
+void setup()
+{
+  tft.init();
+  tft.setRotation(1);
+  tft.fillScreen(TFT_BLACK);
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.setTextSize(2);
+
+  tft.println("Connecting to Wi-Fi...");
   WiFi.begin(ssid, password);
-  Serial.print("Connecting to Wi-Fi");
-  while (WiFi.status() != WL_CONNECTED) {
+  while (WiFi.status() != WL_CONNECTED)
+  {
     delay(500);
-    Serial.print(".");
+    tft.print(".");
   }
-  Serial.println("\nConnected to the Wi-Fi network.");
+  tft.println("\nConnected!");
 
-  // Now you can make HTTP requests
   HTTPClient http;
-  http.begin("https://randomuser.me/api/"); // Replace with your API endpoint
+  http.begin("https://randomuser.me/api/");
   int httpCode = http.GET();
-  if (httpCode > 0) {
-      String payload = http.getString();
-      Serial.println("Received payload:");
-      Serial.println(payload);
-  } else {
-      Serial.printf("Error: %s\n", http.errorToString(httpCode).c_str());
+  if (httpCode > 0)
+  {
+    tft.println("Payload received:");
+    tft.println(http.getString());
+  }
+  else
+  {
+    tft.printf("Error: %s\n", http.errorToString(httpCode).c_str());
   }
   http.end();
 }
 
-void loop() {
-  // Normally you’d do repeated requests or handle logic here
-  // For now, just do nothing
+void loop()
+{
 }
