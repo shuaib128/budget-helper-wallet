@@ -9,6 +9,10 @@ TFT_eSPI tft = TFT_eSPI();
 
 void setup()
 {
+  // Initialize Serial communication
+  Serial.begin(115200);
+  Serial.println("Serial communication initialized!");
+
   tft.init();
   tft.setRotation(1);
   tft.fillScreen(TFT_BLACK);
