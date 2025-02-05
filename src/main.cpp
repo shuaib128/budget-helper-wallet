@@ -13,16 +13,17 @@ void setup()
   Serial.begin(115200);
   Serial.println("Serial communication initialized!");
 
+  // Initialize TFT display
   tft.init();
-  tft.setRotation(1);
+  tft.setRotation(2);
   tft.fillScreen(TFT_BLACK);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  tft.setTextSize(2);
+  tft.setTextSize(1);
 
-  // Connect to WIFI
+  // Connect to WiFi
   connect_to_wifi(tft);
 
-  // Make HTTP GET request
+  // Initial data fetch
   HTTPClient http;
   get_data(tft, http);
 }
