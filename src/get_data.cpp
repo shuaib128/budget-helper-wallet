@@ -69,6 +69,7 @@ void get_data(TFT_eSPI &tft, HTTPClient &http)
     // Bypass SSL verification (INSECURE!)
     client.setInsecure();
 
+    //https://plain-poems-pull.loca.lt/api/balance/ (The link has to be this)
     http.begin(client, "https://plain-poems-pull.loca.lt/api/balance/");
     int httpCode = http.GET();
 
@@ -95,17 +96,15 @@ void get_data(TFT_eSPI &tft, HTTPClient &http)
         tft.setCursor(10, 5);
         tft.print("Balance: $");
         tft.println(balance);
-        Serial.print("Balance: ");
-        Serial.println(balance);
 
         // Display Transactions
         tft.setTextSize(1);
         tft.setTextColor(TFT_WHITE, TFT_BLACK);
-        tft.setCursor(10, 40);
+        tft.setCursor(10, 25);
         tft.println("Recent Transactions:");
 
         JsonArray transactions = jsonDoc["transactions"];
-        int yOffset = 60;
+        int yOffset = 40;
         // Limit to last 5 transactions
         int maxTransactions = MIN(transactions.size(), 5);
 
